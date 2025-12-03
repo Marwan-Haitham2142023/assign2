@@ -4,7 +4,7 @@ private:
     /* data */
 public:
     ssd(/* args */);
-    ~ssd();
+    ~ssd();// marwan passed from here;
 };
 
 ssd::ssd(/* args */)
