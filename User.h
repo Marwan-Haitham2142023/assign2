@@ -1,0 +1,33 @@
+#pragma once
+#include<iostream>
+#include"FoodItem.h"
+using namespace std;
+ class User
+{
+protected:
+	string UserId,Name,PhoneNumber;
+	static int _Total_Users;
+    static int getTotalUsers() {
+        return _Total_Users;
+    }
+  
+public:
+    User();
+
+    User(string userId, string name, string phoneNumber);
+
+    void SetUserId(string userid);
+   
+    void SetName(string name);
+    void SetPhoneNumber(string phonenum);
+    string GetUserId();
+    string GetName();
+    string GetPhoneNumber();
+
+    virtual void displayInfo() = 0;
+    virtual double calculateEarnings() = 0;
+    virtual ~User();
+    
+	
+};
+
