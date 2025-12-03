@@ -14,3 +14,6 @@ ssd::ssd(/* args */)
 ssd::~ssd()
 {
 }
+
+
+// omar was here
