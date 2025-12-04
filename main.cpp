@@ -35,7 +35,6 @@ int main()
     int driverCount = 0;
     int orderCount = 0;
 
-    // Initialize arrays
     for (int i = 0; i < MAX_CUSTOMERS; i++) customers[i] = nullptr;
     for (int i = 0; i < MAX_DRIVERS; i++) drivers[i] = nullptr;
     for (int i = 0; i < MAX_ORDERS; i++) orders[i] = nullptr;
@@ -51,7 +50,6 @@ int main()
         cout << "Enter your choice: ";
         cin >> choice;
 
-        // Input validation
         if (cin.fail()) {
             cin.clear();
             cin.ignore(10000, '\n');
@@ -104,7 +102,7 @@ int main()
         case 14:
             displayStatistics(customers, customerCount, drivers, driverCount);
             break;
-        case 0:
+        case 15:
             cout << "\nThank you for using ElMenus System!\n";
             break;
         default:
@@ -218,7 +216,47 @@ void createOrder(Order** orders, int& orderCount, Customer** customers, int cust
 
     cout << "\nOrder created successfully!\n";
 }
-void addItemToOrder(Order ** orders,int &ordercount)
-{
-    if()
+void addItemToOrder(Order** orders, int orderCount) {
+    if (orderCount == 0) {
+        cout << "\nNo orders available! Please create an order first.\n";
+        return;
+    }
+
+    cout << "\n--- Add Item to Order ---\n";
+    cout << "Available Orders:\n";
+    for (int i = 0; i < orderCount; i++) {
+        cout << i + 1 << ". Order ID: " << orders[i]->getOrderId() << "\n";
+    }
+
+    int orderChoice;
+    cout << "Select order (1-" << orderCount << "): ";
+    cin >> orderChoice;
+    cin.ignore();
+
+    if (orderChoice < 1 || orderChoice > orderCount) {
+        cout << "\nInvalid order selection!\n";
+        return;
+    }
+
+    string itemName;
+    double price;
+    int quantity;
+
+    cout << "Enter Item Name: ";
+    getline(cin, itemName);
+    cout << "Enter Price: ";
+    cin >> price;
+    cout << "Enter Quantity: ";
+    cin >> quantity;
+    cin.ignore();
+
+    if (price < 0 || quantity < 1) {
+        cout << "\nInvalid price or quantity!\n";
+        return;
+    }
+
+    FoodItem item(itemName, price, quantity);
+    *orders[orderChoice - 1] += item; 
+
+    cout << "\nItem added successfully!\n";
 }
