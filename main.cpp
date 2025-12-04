@@ -47,7 +47,68 @@ int main()
         }
 
         cin.ignore();
+        switch (choice) {
+        case 1:
+            //createCustomer(customers, customerCount);
+            break;
+        case 2:
+            //createDriver(drivers, driverCount);
+            break;
+        case 3:
+            //createOrder(orders, orderCount, customers, customerCount);
+            break;
+        case 4:
+            //addItemToOrder(orders, orderCount);
+            break;
+        case 5:
+            //assignDriverToOrder(orders, orderCount, drivers, driverCount);
+            break;
+        case 6:
+            //updateOrderStatus(orders, orderCount);
+            break;
+        case 7:
+            //displayAllOrders(orders, orderCount);
+            break;
+        case 8:
+            //displayAllCustomers(customers, customerCount);
+            break;
+        case 9:
+            //displayAllDrivers(drivers, driverCount);
+            break;
+        case 10:
+            //compareOrders(orders, orderCount);
+            break;
+        case 11:
+            //combineOrders(orders, orderCount);
+            break;
+        case 12:
+            //saveCompletedOrders(orders, orderCount);
+            break;
+        case 13:
+            //saveDriverStatistics(drivers, driverCount);
+            break;
+        case 14:
+            //displayStatistics(customers, customerCount, drivers, driverCount);
+            break;
+        case 15:
+            cout << "\nThank you for using ElMenus System!\n";
+            break;
+        default:
+            cout << "\nInvalid choice! Please try again.\n";
+        }
+
+        if (choice != 0) {
+            cout << "\nPress Enter to continue...";
+            cin.get();
+        }
+
     } while (choice != 0);
+
+    //cleanup(customers, customerCount, drivers, driverCount, orders, orderCount);
+
+    delete[] customers;
+    delete[] drivers;
+    //delete[] orders;
     return 0;
 }
        
@@ -69,6 +130,6 @@ void displayMainMenu() {
     cout << "12. Save Completed Orders to File\n";
     cout << "13. Save Driver Statistics to File\n";
     cout << "14. Display System Statistics\n";
-    cout << "0.  Exit\n";
+    cout << "15.  Exit\n";
     cout << "========================================\n";
 }
