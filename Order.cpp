@@ -103,7 +103,8 @@ double Order ::CalculateTotal() const
 void Order ::UpdateStatus(OrderStatus newstatus)
 {
     _Status = newstatus;
-    if (_Driver != nullptr && _Customer != nullptr)
+
+    if (_Status == OrderStatus::Delivered)
     {
 
         if (_Status == OrderStatus ::Delivered)
@@ -112,10 +113,10 @@ void Order ::UpdateStatus(OrderStatus newstatus)
             _Driver->CompletedDelivery(orderTotal);
             *_Customer += orderTotal; // انا مش فاهم اوي نظام ال loyality points فا معرفش ده صح ولا لا
         }
-    }
-    else
-    {
-        cout << "There is no driver/customer assigned yet!\n";
+        else
+        {
+            cout << "There is no driver/customer assigned yet!\n";
+        }
     }
 }
 
@@ -159,4 +160,122 @@ void Order ::DisplayOrder() const // عايز testing للكلام ده عشان
 int Order ::GetTotalOrders()
 {
     return _Total_Orders;
+}
+
+string Order::GetOrderId() const
+{
+    return _OrderId;
+}
+
+Customer *Order ::GetCustomer() const
+{
+    return _Customer;
+}
+DeliveryDriver *Order ::GetDriver() const
+{
+    return _Driver;
+}
+OrderStatus Order ::GetStatus() const
+{
+    return _Status;
+}
+int Order ::GetItemCount() const
+{
+    return _ItemCount;
+}
+
+Order &Order ::operator+=(const FoodItem &item)
+{
+
+    AddItem(item);
+
+    return *this;
+}
+
+Order Order ::operator+(const Order &other) const
+{
+    if (this->_Customer != nullptr &&
+        other._Customer != nullptr &&
+        this->_Customer == other._Customer &&
+        this->_Driver == other._Driver)
+    {
+        Order mergedOrder;
+        mergedOrder._OrderId = this->_OrderId + other._OrderId;
+        mergedOrder._Driver = this->_Driver;
+        mergedOrder._Customer = this->_Customer;
+        mergedOrder._Status = OrderStatus::pending;
+
+        for (int i = 0; i < this->_ItemCount; i++)
+        {
+            mergedOrder.AddItem(this->_Items[i]);
+        }
+        for (int i = 0; i < other._ItemCount; i++)
+        {
+            mergedOrder.AddItem(other._Items[i]);
+        }
+
+        return mergedOrder;
+    }
+    else
+    {
+        cout << "Can't merge order! (not the same driver or customer)\n";
+        return Order();
+    }
+}
+
+FoodItem &Order::operator[](int index)
+{
+
+    return _Items[index];
+}
+
+const FoodItem &Order::operator[](int index) const
+{
+
+    return _Items[index];
+}
+
+ostream &operator<<(ostream &out, const Order &order)
+{
+
+    out << "Order Id : " << order._OrderId << "\tCustomer : ";
+    if (order._Customer != nullptr)
+        order._Customer->displayInfo();
+    else
+        out << "Not assigned";
+    out << "\nDriver : ";
+    if (order._Driver != nullptr)
+        order._Driver->displayInfo();
+    else
+        out << "Not assigned";
+
+    out << "\tItems : ";
+    for (int i = 0; i < order._ItemCount; i++)
+    {
+
+        order._Items[i].DisplayItem();
+        out << endl;
+    }
+
+    out << "Order Status : ";
+    if (order._Status == OrderStatus::pending)
+        out << "Pending";
+    else if (order._Status == OrderStatus::Preparing)
+        out << "Preparing";
+    else if (order._Status == OrderStatus::Out_For_Delivery) // ممكن احولها لفانكشن بره, ايه رأيك؟
+        out << "Out For Delivery";
+    else if (order._Status == OrderStatus::Delivered)
+        out << "Delivered";
+    else if (order._Status == OrderStatus::Cancelled)
+        out << "Cancelled";
+
+    out << "\tTotal : " << order.CalculateTotal() << " EGP" << endl;
+
+    return out;
+}
+
+bool operator>(const Order &order1, const Order &order2)
+{
+
+    return order1.CalculateTotal() > order2.CalculateTotal();
 }
