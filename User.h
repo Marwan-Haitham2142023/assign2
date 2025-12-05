@@ -1,9 +1,9 @@
-#pragma once
+﻿#pragma once
 #include<iostream>
 #include"FoodItem.h"
 using namespace std;
-/*  ????? ???? ?????_20246106_G8
-    ??? ???? ?????_20246075_G8
+/*  مروان هيثم السيد_20246106_G8
+    عمر عصام خليفة_20246075_G8
 */
  class User
 {
