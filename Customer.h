@@ -11,6 +11,7 @@ public:
 	Customer();
 
 	Customer(string userId, string name, string phoneNumber, string deliveryaddress, int loyalitypoints=0);         //اشمعنى loyalitypoints=0
+	                                                                                                                 //claude عايزها كده
 
 	void SetDeliveryAddress(string address);
 

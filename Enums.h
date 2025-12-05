@@ -8,6 +8,7 @@ enum class OrderStatus
 	Preparing,
 	Out_For_Delivery,
 	Delivered,						//انا زودت دي, انت كنت سايبها
+	                                //جدع
 	Cancelled
 
 };

@@ -3,6 +3,10 @@
     عمر عصام خليفة_20246075_G8
 */
 int User::_Total_Users = 0;
+ int User::getTotalUsers()
+{
+     return _Total_Users;
+}
 User::User()
 {
     UserId = "";

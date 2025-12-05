@@ -10,9 +10,9 @@ using namespace std;
 protected:
 	string UserId,Name,PhoneNumber;                     // اشمعنى دول مفيش _ قبلهم؟
 	static int _Total_Users;
-    static int getTotalUsers() {                        // ده ليه protected؟
-        return _Total_Users;                            // مش المفروض الreturn بتاعها يكون في ال .cpp ؟
-    }
+    static int getTotalUsers();                        // ده ليه protected؟
+       ;                            // مش المفروض الreturn بتاعها يكون في ال .cpp ؟
+
 
 public:
     User();
