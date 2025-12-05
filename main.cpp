@@ -97,7 +97,7 @@ int main()
             cout << "\nInvalid choice! Please try again.\n";
         }
 
-        if (choice != 0) {
+        if (choice != 15) {
             cout << "\nPress Enter to continue...";
             cin.get();
         }
