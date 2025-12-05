@@ -10,8 +10,8 @@ class Customer : public User
 public:
 	Customer();
 
-	Customer(string userId, string name, string phoneNumber, string deliveryaddress, int loyalitypoints=0);
-	
+	Customer(string userId, string name, string phoneNumber, string deliveryaddress, int loyalitypoints=0);         //اشمعنى loyalitypoints=0
+
 	void SetDeliveryAddress(string address);
 
 		void SetLoyalityPoints(int loyalitypoints);

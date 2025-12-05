@@ -38,7 +38,7 @@ int main()
         cout << "Enter your choice: ";
         cin >> choice;
 
-        if (cin.fail()) 
+        if (cin.fail())
         {
             cin.clear();
             cin.ignore(10000, '\n');
@@ -111,7 +111,7 @@ int main()
     //delete[] orders;
     return 0;
 }
-       
+
 void displayMainMenu() {
     cout << "\n========================================\n";
     cout << "              MAIN MENU\n";

@@ -8,19 +8,19 @@ using namespace std;
  class User
 {
 protected:
-	string UserId,Name,PhoneNumber;
+	string UserId,Name,PhoneNumber;                     // اشمعنى دول مفيش _ قبلهم؟
 	static int _Total_Users;
-    static int getTotalUsers() {
-        return _Total_Users;
+    static int getTotalUsers() {                        // ده ليه protected؟
+        return _Total_Users;                            // مش المفروض الreturn بتاعها يكون في ال .cpp ؟
     }
-  
+
 public:
     User();
 
     User(string userId, string name, string phoneNumber);
 
     void SetUserId(string userid);
-   
+
     void SetName(string name);
     void SetPhoneNumber(string phonenum);
     string GetUserId();
@@ -30,7 +30,7 @@ public:
     virtual void displayInfo() = 0;
     virtual double calculateEarnings() = 0;
     virtual ~User();
-    
-	
+
+
 };
 
