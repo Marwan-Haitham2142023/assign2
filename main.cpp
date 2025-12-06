@@ -1,47 +1,52 @@
 #include <iostream>
-#include<iomanip>
-#include<fstream>
-#include<string>
+#include <iomanip>
+#include <fstream>
+#include <string>
 #include "Enums.h"
 #include "Customer.h"
-#include"DeliveryDriver.h"
-#include"User.h"
-#include"Order.h"
+#include "DeliveryDriver.h"
+#include "User.h"
+#include "Order.h"
+#include "FileOperations.h"
+
 using namespace std;
 void displayMainMenu();
-void createCustomer(Customer** customers, int& customerCount);
-void createDriver(DeliveryDriver** drivers, int& driverCount);
-void createOrder(Order** orders, int& orderCount, Customer** customers, int customerCount);
-void addItemToOrder(Order** orders, int orderCount);
-void assignDriverToOrder(Order** orders, int orderCount, DeliveryDriver** drivers, int driverCount);
-void updateOrderStatus(Order** orders, int orderCount);
-void displayAllOrders(Order** orders, int orderCount);
-void displayAllCustomers(Customer** customers, int customerCount);
-void displayAllDrivers(DeliveryDriver** drivers, int driverCount);
-void compareOrders(Order** orders, int orderCount);
-void combineOrders(Order** orders, int& orderCount);
+void createCustomer(Customer **customers, int &customerCount);
+void createDriver(DeliveryDriver **drivers, int &driverCount);
+void createOrder(Order **orders, int &orderCount, Customer **customers, int customerCount);
+void addItemToOrder(Order **orders, int orderCount);
+void assignDriverToOrder(Order **orders, int orderCount, DeliveryDriver **drivers, int driverCount);
+void updateOrderStatus(Order **orders, int orderCount);
+void displayAllOrders(Order **orders, int orderCount);
+void displayAllCustomers(Customer **customers, int customerCount);
+void displayAllDrivers(DeliveryDriver **drivers, int driverCount);
+void compareOrders(Order **orders, int orderCount);
+void combineOrders(Order **orders, int &orderCount);
 /*void saveCompletedOrders(Order** orders, int orderCount);
 void saveDriverStatistics(DeliveryDriver** drivers, int driverCount);
 void displayStatistics(Customer** customers, int customerCount, DeliveryDriver** drivers, int driverCount);
 void cleanup(Customer** customers, int customerCount, DeliveryDriver** drivers, int driverCount, Order** orders, int orderCount);
-*/int main()
+*/
+int main()
 {
     const int MAX_CUSTOMERS = 100;
     const int MAX_DRIVERS = 50;
     const int MAX_ORDERS = 200;
 
-    Customer** customers = new Customer * [MAX_CUSTOMERS];
-    DeliveryDriver** drivers = new DeliveryDriver * [MAX_DRIVERS];
-    Order** orders = new Order * [MAX_ORDERS];
+    Customer **customers = new Customer *[MAX_CUSTOMERS];
+    DeliveryDriver **drivers = new DeliveryDriver *[MAX_DRIVERS];
+    Order **orders = new Order *[MAX_ORDERS];
 
     int customerCount = 0;
     int driverCount = 0;
     int orderCount = 0;
 
-
-    for (int i = 0; i < MAX_CUSTOMERS; i++) customers[i] = nullptr;
-    for (int i = 0; i < MAX_DRIVERS; i++) drivers[i] = nullptr;
-    for (int i = 0; i < MAX_ORDERS; i++) orders[i] = nullptr;
+    for (int i = 0; i < MAX_CUSTOMERS; i++)
+        customers[i] = nullptr;
+    for (int i = 0; i < MAX_DRIVERS; i++)
+        drivers[i] = nullptr;
+    for (int i = 0; i < MAX_ORDERS; i++)
+        orders[i] = nullptr;
 
     int choice;
 
@@ -49,7 +54,8 @@ void cleanup(Customer** customers, int customerCount, DeliveryDriver** drivers, 
     cout << "   ELMENUS FOOD DELIVERY SYSTEM\n";
     cout << "========================================\n";
 
-    do {
+    do
+    {
         displayMainMenu();
         cout << "Enter your choice: ";
         cin >> choice;
@@ -63,7 +69,8 @@ void cleanup(Customer** customers, int customerCount, DeliveryDriver** drivers, 
         }
 
         cin.ignore();
-        switch (choice) {
+        switch (choice)
+        {
         case 1:
             createCustomer(customers, customerCount);
             break;
@@ -98,13 +105,13 @@ void cleanup(Customer** customers, int customerCount, DeliveryDriver** drivers, 
             combineOrders(orders, orderCount);
             break;
         case 12:
-            //saveCompletedOrders(orders, orderCount);
+            // saveCompletedOrders(orders, orderCount);
             break;
         case 13:
-            //saveDriverStatistics(drivers, driverCount);
+            // saveDriverStatistics(drivers, driverCount);
             break;
         case 14:
-            //displayStatistics(customers, customerCount, drivers, driverCount);
+            // displayStatistics(customers, customerCount, drivers, driverCount);
             break;
         case 15:
             cout << "\nThank you for using ElMenus System!\n";
@@ -113,14 +120,15 @@ void cleanup(Customer** customers, int customerCount, DeliveryDriver** drivers, 
             cout << "\nInvalid choice! Please try again.\n";
         }
 
-        if (choice != 15) {
+        if (choice != 15)
+        {
             cout << "\nPress Enter to continue...";
             cin.get();
         }
 
     } while (choice != 15);
 
-    //cleanup(customers, customerCount, drivers, driverCount, orders, orderCount);
+    // cleanup(customers, customerCount, drivers, driverCount, orders, orderCount);
 
     delete[] customers;
     delete[] drivers;
@@ -128,7 +136,8 @@ void cleanup(Customer** customers, int customerCount, DeliveryDriver** drivers, 
     return 0;
 }
 
-void displayMainMenu() {
+void displayMainMenu()
+{
     cout << "\n========================================\n";
     cout << "              MAIN MENU\n";
     cout << "========================================\n";
@@ -149,7 +158,8 @@ void displayMainMenu() {
     cout << "15.  Exit\n";
     cout << "========================================\n";
 }
-void createCustomer(Customer** customers, int& customerCount) {
+void createCustomer(Customer **customers, int &customerCount)
+{
     string userId, name, phoneNumber, address;
 
     cout << "\n--- Create New Customer ---\n";
@@ -167,7 +177,8 @@ void createCustomer(Customer** customers, int& customerCount) {
 
     cout << "\nCustomer created successfully!\n";
 }
-void createDriver(DeliveryDriver** drivers, int& driverCount) {
+void createDriver(DeliveryDriver **drivers, int &driverCount)
+{
     string userId, name, phoneNumber, vehicleType;
 
     cout << "\n--- Create New Delivery Driver ---\n";
@@ -185,17 +196,20 @@ void createDriver(DeliveryDriver** drivers, int& driverCount) {
 
     cout << "\nDriver created successfully!\n";
 }
-void createOrder(Order** orders, int& orderCount, Customer** customers, int customerCount) {
-    if (customerCount == 0) {
+void createOrder(Order **orders, int &orderCount, Customer **customers, int customerCount)
+{
+    if (customerCount == 0)
+    {
         cout << "\nNo customers available! Please create a customer first.\n";
         return;
     }
 
     cout << "\n--- Create New Order ---\n";
     cout << "Available Customers:\n";
-    for (int i = 0; i < customerCount; i++) {
+    for (int i = 0; i < customerCount; i++)
+    {
         cout << i + 1 << ". " << customers[i]->GetUserId() << " - "
-            << customers[i]->GetName() << "\n";
+             << customers[i]->GetName() << "\n";
     }
 
     int customerChoice;
@@ -203,7 +217,8 @@ void createOrder(Order** orders, int& orderCount, Customer** customers, int cust
     cin >> customerChoice;
     cin.ignore();
 
-    if (customerChoice < 1 || customerChoice > customerCount) {
+    if (customerChoice < 1 || customerChoice > customerCount)
+    {
         cout << "\nInvalid customer selection!\n";
         return;
     }
@@ -212,20 +227,23 @@ void createOrder(Order** orders, int& orderCount, Customer** customers, int cust
     cout << "Enter Order ID: ";
     getline(cin, orderId);
 
-    orders[orderCount] = new Order(orderId, customers[customerChoice -1]);
+    orders[orderCount] = new Order(orderId, customers[customerChoice - 1]);
     orderCount++;
 
     cout << "\nOrder created successfully!\n";
 }
-void addItemToOrder(Order** orders, int orderCount) {
-    if (orderCount == 0) {
+void addItemToOrder(Order **orders, int orderCount)
+{
+    if (orderCount == 0)
+    {
         cout << "\nNo orders available! Please create an order first.\n";
         return;
     }
 
     cout << "\n--- Add Item to Order ---\n";
     cout << "Available Orders:\n";
-    for (int i = 0; i < orderCount; i++) {
+    for (int i = 0; i < orderCount; i++)
+    {
         cout << i + 1 << ". Order ID: " << orders[i]->GetOrderId() << "\n";
     }
 
@@ -234,7 +252,8 @@ void addItemToOrder(Order** orders, int orderCount) {
     cin >> orderChoice;
     cin.ignore();
 
-    if (orderChoice < 1 || orderChoice > orderCount) {
+    if (orderChoice < 1 || orderChoice > orderCount)
+    {
         cout << "\nInvalid order selection!\n";
         return;
     }
@@ -251,7 +270,8 @@ void addItemToOrder(Order** orders, int orderCount) {
     cin >> quantity;
     cin.ignore();
 
-    if (price < 0 || quantity < 1) {
+    if (price < 0 || quantity < 1)
+    {
         cout << "\nInvalid price or quantity!\n";
         return;
     }
@@ -262,20 +282,24 @@ void addItemToOrder(Order** orders, int orderCount) {
     cout << "\nItem added successfully!\n";
 }
 
-void assignDriverToOrder(Order** orders, int orderCount, DeliveryDriver** drivers, int driverCount) {
-    if (orderCount == 0) {
+void assignDriverToOrder(Order **orders, int orderCount, DeliveryDriver **drivers, int driverCount)
+{
+    if (orderCount == 0)
+    {
         cout << "\nNo orders available!\n";
         return;
     }
 
-    if (driverCount == 0) {
+    if (driverCount == 0)
+    {
         cout << "\nNo drivers available! Please create a driver first.\n";
         return;
     }
 
     cout << "\n--- Assign Driver to Order ---\n";
     cout << "Available Orders:\n";
-    for (int i = 0; i < orderCount; i++) {
+    for (int i = 0; i < orderCount; i++)
+    {
         cout << i + 1 << ". Order ID: " << orders[i]->GetOrderId() << "\n";
     }
 
@@ -284,15 +308,17 @@ void assignDriverToOrder(Order** orders, int orderCount, DeliveryDriver** driver
     cin >> orderChoice;
     cin.ignore();
 
-    if (orderChoice < 1 || orderChoice > orderCount) {
+    if (orderChoice < 1 || orderChoice > orderCount)
+    {
         cout << "\nInvalid order selection!\n";
         return;
     }
 
     cout << "\nAvailable Drivers:\n";
-    for (int i = 0; i < driverCount; i++) {
+    for (int i = 0; i < driverCount; i++)
+    {
         cout << i + 1 << ". " << drivers[i]->GetUserId() << " - "
-            << drivers[i]->GetName() << " (" << drivers[i]->GetVehicleType() << ")\n";
+             << drivers[i]->GetName() << " (" << drivers[i]->GetVehicleType() << ")\n";
     }
 
     int driverChoice;
@@ -300,7 +326,8 @@ void assignDriverToOrder(Order** orders, int orderCount, DeliveryDriver** driver
     cin >> driverChoice;
     cin.ignore();
 
-    if (driverChoice < 1 || driverChoice > driverCount) {
+    if (driverChoice < 1 || driverChoice > driverCount)
+    {
         cout << "\nInvalid driver selection!\n";
         return;
     }
@@ -309,15 +336,18 @@ void assignDriverToOrder(Order** orders, int orderCount, DeliveryDriver** driver
     cout << "\nDriver assigned successfully!\n";
 }
 
-void updateOrderStatus(Order** orders, int orderCount) {
-    if (orderCount == 0) {
+void updateOrderStatus(Order **orders, int orderCount)
+{
+    if (orderCount == 0)
+    {
         cout << "\nNo orders available!\n";
         return;
     }
 
     cout << "\n--- Update Order Status ---\n";
     cout << "Available Orders:\n";
-    for (int i = 0; i < orderCount; i++) {
+    for (int i = 0; i < orderCount; i++)
+    {
         cout << i + 1 << ". Order ID: " << orders[i]->GetOrderId() << "\n";
     }
 
@@ -326,7 +356,8 @@ void updateOrderStatus(Order** orders, int orderCount) {
     cin >> orderChoice;
     cin.ignore();
 
-    if (orderChoice < 1 || orderChoice > orderCount) {
+    if (orderChoice < 1 || orderChoice > orderCount)
+    {
         cout << "\nInvalid order selection!\n";
         return;
     }
@@ -344,12 +375,23 @@ void updateOrderStatus(Order** orders, int orderCount) {
     cin.ignore();
 
     OrderStatus newStatus;
-    switch (statusChoice) {
-    case 1: newStatus = OrderStatus::pending; break;
-    case 2: newStatus = OrderStatus::Preparing; break;
-    case 3: newStatus = OrderStatus::Out_For_Delivery; break;
-    case 4: newStatus = OrderStatus::Delivered; break;
-    case 5: newStatus = OrderStatus::Cancelled; break;
+    switch (statusChoice)
+    {
+    case 1:
+        newStatus = OrderStatus::pending;
+        break;
+    case 2:
+        newStatus = OrderStatus::Preparing;
+        break;
+    case 3:
+        newStatus = OrderStatus::Out_For_Delivery;
+        break;
+    case 4:
+        newStatus = OrderStatus::Delivered;
+        break;
+    case 5:
+        newStatus = OrderStatus::Cancelled;
+        break;
     default:
         cout << "\nInvalid status selection!\n";
         return;
@@ -359,52 +401,64 @@ void updateOrderStatus(Order** orders, int orderCount) {
     cout << "\nOrder status updated successfully!\n";
 }
 
-void displayAllOrders(Order** orders, int orderCount) {
-    if (orderCount == 0) {
+void displayAllOrders(Order **orders, int orderCount)
+{
+    if (orderCount == 0)
+    {
         cout << "\nNo orders available!\n";
         return;
     }
 
     cout << "\n--- All Orders ---\n";
-    for (int i = 0; i < orderCount; i++) {
+    for (int i = 0; i < orderCount; i++)
+    {
         orders[i]->DisplayOrder();
     }
 }
 
-void displayAllCustomers(Customer** customers, int customerCount) {
-    if (customerCount == 0) {
+void displayAllCustomers(Customer **customers, int customerCount)
+{
+    if (customerCount == 0)
+    {
         cout << "\nNo customers available!\n";
         return;
     }
 
     cout << "\n--- All Customers ---\n";
-    for (int i = 0; i < customerCount; i++) {
+    for (int i = 0; i < customerCount; i++)
+    {
         customers[i]->displayInfo();
         cout << endl;
     }
 }
 
-void displayAllDrivers(DeliveryDriver** drivers, int driverCount) {
-    if (driverCount == 0) {
+void displayAllDrivers(DeliveryDriver **drivers, int driverCount)
+{
+    if (driverCount == 0)
+    {
         cout << "\nNo drivers available!\n";
         return;
     }
 
     cout << "\n--- All Drivers ---\n";
-    for (int i = 0; i < driverCount; i++) {
+    for (int i = 0; i < driverCount; i++)
+    {
         drivers[i]->displayInfo();
     }
 }
 
-void compareOrders(Order** orders, int orderCount) {
-    if (orderCount < 2) {
+void compareOrders(Order **orders, int orderCount)
+{
+    if (orderCount < 2)
+    {
         cout << "\nNeed at least 2 orders to compare!\n";
         return;
     }
 
     cout << "\n--- Compare Orders ---\n";
     cout << "Available Orders:\n";
-    for (int i = 0; i < orderCount; i++) {
+    for (int i = 0; i < orderCount; i++)
+    {
         cout << i + 1 << ". " << *orders[i] << "\n"; // Using operator<<
     }
 
@@ -415,31 +469,37 @@ void compareOrders(Order** orders, int orderCount) {
     cin >> order2;
     cin.ignore();
 
-    if (order1 < 1 || order1 > orderCount || order2 < 1 || order2 > orderCount) {
+    if (order1 < 1 || order1 > orderCount || order2 < 1 || order2 > orderCount)
+    {
         cout << "\nInvalid order selection!\n";
         return;
     }
 
     cout << "\n--- Comparison Result ---\n";
-    if (*orders[order1 - 1] > *orders[order2 - 1]) { // Using operator>
+    if (*orders[order1 - 1] > *orders[order2 - 1])
+    { // Using operator>
         cout << "Order " << orders[order1 - 1]->GetOrderId()
-            << " is greater than Order " << orders[order2 - 1]->GetOrderId() << "\n";
+             << " is greater than Order " << orders[order2 - 1]->GetOrderId() << "\n";
     }
-    else {
+    else
+    {
         cout << "Order " << orders[order2 - 1]->GetOrderId()
-            << " is greater than or equal to Order " << orders[order1 - 1]->GetOrderId() << "\n";
+             << " is greater than or equal to Order " << orders[order1 - 1]->GetOrderId() << "\n";
     }
 }
 
-void combineOrders(Order** orders, int& orderCount) {
-    if (orderCount < 2) {
+void combineOrders(Order **orders, int &orderCount)
+{
+    if (orderCount < 2)
+    {
         cout << "\nNeed at least 2 orders to combine!\n";
         return;
     }
 
     cout << "\n--- Combine Orders ---\n";
     cout << "Available Orders:\n";
-    for (int i = 0; i < orderCount; i++) {
+    for (int i = 0; i < orderCount; i++)
+    {
         cout << i + 1 << ". Order ID: " << orders[i]->GetOrderId() << "\n";
     }
 
@@ -450,7 +510,8 @@ void combineOrders(Order** orders, int& orderCount) {
     cin >> order2;
     cin.ignore();
 
-    if (order1 < 1 || order1 > orderCount || order2 < 1 || order2 > orderCount) {
+    if (order1 < 1 || order1 > orderCount || order2 < 1 || order2 > orderCount)
+    {
         cout << "\nInvalid order selection!\n";
         return;
     }
