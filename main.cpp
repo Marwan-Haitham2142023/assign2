@@ -9,7 +9,7 @@
 #include"Order.h"
 using namespace std;
 void displayMainMenu();
-
+void createCustomer(Customer** customers, int& customerCount);
 int main()
 {
     const int MAX_CUSTOMERS = 100;
@@ -51,7 +51,7 @@ int main()
         cin.ignore();
         switch (choice) {
         case 1:
-            //createCustomer(customers, customerCount);
+            createCustomer(customers, customerCount);
             break;
         case 2:
             //createDriver(drivers, driverCount);
