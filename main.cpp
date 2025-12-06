@@ -10,6 +10,8 @@
 using namespace std;
 void displayMainMenu();
 void createCustomer(Customer** customers, int& customerCount);
+void createDriver(DeliveryDriver** drivers, int& driverCount);
+void createOrder(Order** orders, int& orderCount, Customer** customers, int customerCount);
 int main()
 {
     const int MAX_CUSTOMERS = 100;
@@ -54,10 +56,10 @@ int main()
             createCustomer(customers, customerCount);
             break;
         case 2:
-            //createDriver(drivers, driverCount);
+            createDriver(drivers, driverCount);
             break;
         case 3:
-            //createOrder(orders, orderCount, customers, customerCount);
+            createOrder(orders, orderCount, customers, customerCount);
             break;
         case 4:
             //addItemToOrder(orders, orderCount);
@@ -78,7 +80,7 @@ int main()
             //displayAllDrivers(drivers, driverCount);
             break;
         case 10:
-            //ompareOrders(orders, orderCount);
+            //compareOrders(orders, orderCount);
             break;
         case 11:
             //combineOrders(orders, orderCount);
@@ -152,4 +154,54 @@ void createCustomer(Customer** customers, int& customerCount) {
     customerCount++;
 
     cout << "\nCustomer created successfully!\n";
+}
+void createDriver(DeliveryDriver** drivers, int& driverCount) {
+    string userId, name, phoneNumber, vehicleType;
+
+    cout << "\n--- Create New Delivery Driver ---\n";
+    cout << "Enter Driver ID: ";
+    getline(cin, userId);
+    cout << "Enter Name: ";
+    getline(cin, name);
+    cout << "Enter Phone Number: ";
+    getline(cin, phoneNumber);
+    cout << "Enter Vehicle Type: ";
+    getline(cin, vehicleType);
+
+    drivers[driverCount] = new DeliveryDriver(userId, name, phoneNumber, vehicleType, 0, 0.0);
+    driverCount++;
+
+    cout << "\nDriver created successfully!\n";
+}
+void createOrder(Order** orders, int& orderCount, Customer** customers, int customerCount) {
+    if (customerCount == 0) {
+        cout << "\nNo customers available! Please create a customer first.\n";
+        return;
+    }
+
+    cout << "\n--- Create New Order ---\n";
+    cout << "Available Customers:\n";
+    for (int i = 0; i < customerCount; i++) {
+        cout << i + 1 << ". " << customers[i]->GetUserId() << " - "
+            << customers[i]->GetName() << "\n";
+    }
+
+    int customerChoice;
+    cout << "Select customer (1-" << customerCount << "): ";
+    cin >> customerChoice;
+    cin.ignore();
+
+    if (customerChoice < 1 || customerChoice > customerCount) {
+        cout << "\nInvalid customer selection!\n";
+        return;
+    }
+
+    string orderId;
+    cout << "Enter Order ID: ";
+    getline(cin, orderId);
+
+    orders[orderCount] = new Order(orderId, customers[customerChoice ]);
+    orderCount++;
+
+    cout << "\nOrder created successfully!\n";
 }
