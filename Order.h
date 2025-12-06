@@ -46,7 +46,7 @@ public:
 	friend ostream& operator<<(ostream& out, const Order& order);
 	friend bool operator>(const Order& order1, const Order& order2);
 
-	void SaveCompletedOrdersToFile();
+	
 
 };
 
