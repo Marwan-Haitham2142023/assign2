@@ -6,8 +6,10 @@
 #include "Customer.h"
 #include"DeliveryDriver.h"
 #include"User.h"
+#include"Order.h"
 using namespace std;
 void displayMainMenu();
+
 int main()
 {
     const int MAX_CUSTOMERS = 100;
@@ -16,7 +18,7 @@ int main()
 
     Customer** customers = new Customer * [MAX_CUSTOMERS];
     DeliveryDriver** drivers = new DeliveryDriver * [MAX_DRIVERS];
-    //Order** orders = new Order * [MAX_ORDERS];
+    Order** orders = new Order * [MAX_ORDERS];
 
     int customerCount = 0;
     int driverCount = 0;
@@ -25,7 +27,7 @@ int main()
 
     for (int i = 0; i < MAX_CUSTOMERS; i++) customers[i] = nullptr;
     for (int i = 0; i < MAX_DRIVERS; i++) drivers[i] = nullptr;
-    //for (int i = 0; i < MAX_ORDERS; i++) orders[i] = nullptr;
+    for (int i = 0; i < MAX_ORDERS; i++) orders[i] = nullptr;
 
     int choice;
 
@@ -76,7 +78,7 @@ int main()
             //displayAllDrivers(drivers, driverCount);
             break;
         case 10:
-            //compareOrders(orders, orderCount);
+            //ompareOrders(orders, orderCount);
             break;
         case 11:
             //combineOrders(orders, orderCount);
@@ -102,13 +104,13 @@ int main()
             cin.get();
         }
 
-    } while (choice != 0);
+    } while (choice != 15);
 
     //cleanup(customers, customerCount, drivers, driverCount, orders, orderCount);
 
     delete[] customers;
     delete[] drivers;
-    //delete[] orders;
+    delete[] orders;
     return 0;
 }
 
@@ -132,4 +134,22 @@ void displayMainMenu() {
     cout << "14. Display System Statistics\n";
     cout << "15.  Exit\n";
     cout << "========================================\n";
+}
+void createCustomer(Customer** customers, int& customerCount) {
+    string userId, name, phoneNumber, address;
+
+    cout << "\n--- Create New Customer ---\n";
+    cout << "Enter Customer ID: ";
+    getline(cin, userId);
+    cout << "Enter Name: ";
+    getline(cin, name);
+    cout << "Enter Phone Number: ";
+    getline(cin, phoneNumber);
+    cout << "Enter Delivery Address: ";
+    getline(cin, address);
+
+    customers[customerCount] = new Customer(userId, name, phoneNumber, address, 0);
+    customerCount++;
+
+    cout << "\nCustomer created successfully!\n";
 }

@@ -111,7 +111,9 @@ void Order ::UpdateStatus(OrderStatus newstatus)
         {
             double orderTotal = CalculateTotal();
             _Driver->CompletedDelivery(orderTotal);
-            *_Customer += orderTotal; // انا مش فاهم اوي نظام ال loyality points فا معرفش ده صح ولا لا
+            ++(*_Driver);
+            int pointsearned = (int)orderTotal / 10.0;
+            *_Customer += pointsearned; // انا مش فاهم اوي نظام ال loyality points فا معرفش ده صح ولا لا
         }
         else
         {
@@ -137,7 +139,7 @@ void Order ::DisplayOrder() const // عايز testing للكلام ده عشان
     cout << "\tItems : ";
     for (int i = 0; i < _ItemCount; i++)
     {
-
+        cout << (i + 1);
         _Items[i].DisplayItem();
         cout << endl;
     }
