@@ -18,7 +18,7 @@ Order ::Order()
     _Total_Orders++;
 }
 
-Order ::Order(string orderId, Customer *customer)
+Order::Order(string orderId, Customer *customer) 
 {
     _OrderId = orderId;
     _Customer = customer;
@@ -30,7 +30,7 @@ Order ::Order(string orderId, Customer *customer)
     _Total_Orders++;
 }
 
-Order ::Order(const Order &obj)
+Order::Order(const Order &obj)
 {
 
     _OrderId = obj._OrderId;
@@ -51,7 +51,7 @@ Order ::Order(const Order &obj)
     _Total_Orders++;
 }
 
-Order ::~Order()
+Order::~Order()
 {
     delete[] _Items;
 }
@@ -73,7 +73,7 @@ void Order ::Resize()
     _Capacity = tempCap;
 }
 
-void Order ::AddItem(const FoodItem &item)
+void Order::AddItem(const FoodItem &item)
 {
     if (_ItemCount >= _Capacity)
     {
@@ -84,7 +84,7 @@ void Order ::AddItem(const FoodItem &item)
     _ItemCount++;
 }
 
-void Order ::AssignDriver(DeliveryDriver *driver)
+void Order  ::AssignDriver(DeliveryDriver *driver)
 {
     _Driver = driver;
 }

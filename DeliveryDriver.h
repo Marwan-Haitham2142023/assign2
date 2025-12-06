@@ -37,6 +37,6 @@ public:
 
 	DeliveryDriver& operator ++(int);
 	
-	void SaveDriverStastiscsToFile(DeliveryDriver * drivers[],int drivercount);
+	
 };
 

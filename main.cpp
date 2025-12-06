@@ -22,11 +22,11 @@ void displayAllCustomers(Customer **customers, int customerCount);
 void displayAllDrivers(DeliveryDriver **drivers, int driverCount);
 void compareOrders(Order **orders, int orderCount);
 void combineOrders(Order **orders, int &orderCount);
-/*void saveCompletedOrders(Order** orders, int orderCount);
+void saveCompletedOrders(Order** orders, int orderCount);
 void saveDriverStatistics(DeliveryDriver** drivers, int driverCount);
 void displayStatistics(Customer** customers, int customerCount, DeliveryDriver** drivers, int driverCount);
 void cleanup(Customer** customers, int customerCount, DeliveryDriver** drivers, int driverCount, Order** orders, int orderCount);
-*/
+
 int main()
 {
     const int MAX_CUSTOMERS = 100;
@@ -105,13 +105,13 @@ int main()
             combineOrders(orders, orderCount);
             break;
         case 12:
-            // saveCompletedOrders(orders, orderCount);
+             saveCompletedOrders(orders, orderCount);
             break;
         case 13:
-            // saveDriverStatistics(drivers, driverCount);
+             saveDriverStatistics(drivers, driverCount);
             break;
         case 14:
-            // displayStatistics(customers, customerCount, drivers, driverCount);
+             displayStatistics(customers, customerCount, drivers, driverCount);
             break;
         case 15:
             cout << "\nThank you for using ElMenus System!\n";
@@ -128,7 +128,7 @@ int main()
 
     } while (choice != 15);
 
-    // cleanup(customers, customerCount, drivers, driverCount, orders, orderCount);
+     cleanup(customers, customerCount, drivers, driverCount, orders, orderCount);
 
     delete[] customers;
     delete[] drivers;
@@ -413,6 +413,7 @@ void displayAllOrders(Order **orders, int orderCount)
     for (int i = 0; i < orderCount; i++)
     {
         orders[i]->DisplayOrder();
+        cout << endl;
     }
 }
 
@@ -444,6 +445,7 @@ void displayAllDrivers(DeliveryDriver **drivers, int driverCount)
     for (int i = 0; i < driverCount; i++)
     {
         drivers[i]->displayInfo();
+        cout << endl;
     }
 }
 
@@ -521,4 +523,194 @@ void combineOrders(Order **orders, int &orderCount)
     orderCount++;
 
     cout << "\nOrders combined successfully! New Order ID: " << combined.GetOrderId() << "\n";
+}
+void saveCompletedOrders(Order** orders, int orderCount) {
+    ofstream outFile("completed_orders.txt");
+
+    if (!outFile) {
+        cout << "\nError: Unable to open completed_orders.txt for writing!\n";
+        return;
+    }
+
+    string header = "========================================\n";
+    header += "       COMPLETED ORDERS REPORT\n";
+    header += "========================================\n\n";
+
+    outFile << header;
+    cout << "\n" << header;
+
+    int completedCount = 0;
+    double totalRevenue = 0.0;
+
+    for (int i = 0; i < orderCount; i++) {
+        if (orders[i]->GetStatus() == OrderStatus::Delivered) {
+            completedCount++;
+            double orderTotal = orders[i]->CalculateTotal();
+            totalRevenue += orderTotal;
+
+            string orderInfo = "Order ID: " + orders[i]->GetOrderId() + "\n";
+            orderInfo += "Customer: " + orders[i]->GetCustomer()->GetName() + "\n";
+
+            if (orders[i]->GetDriver() != nullptr) {
+                orderInfo += "Driver: " + orders[i]->GetDriver()->GetName() + "\n";
+            }
+
+            outFile << orderInfo;
+            cout << orderInfo;
+
+            outFile << fixed << setprecision(2);
+            cout << fixed << setprecision(2);
+
+            outFile << "Total: " << orderTotal << " EGP\n";
+            cout << "Total: " << orderTotal << " EGP\n";
+
+            outFile << "Items: " << orders[i]->GetItemCount() << "\n";
+            cout << "Items: " << orders[i]->GetItemCount() << "\n";
+
+            outFile << "----------------------------------------\n";
+            cout << "----------------------------------------\n";
+        }
+    }
+
+    string summary = "\n========================================\n";
+    summary += "              SUMMARY\n";
+    summary += "========================================\n";
+
+    outFile << summary;
+    cout << summary;
+
+    outFile << "Total Completed Orders: " << completedCount << "\n";
+    cout << "Total Completed Orders: " << completedCount << "\n";
+
+    outFile << fixed << setprecision(2);
+    cout << fixed << setprecision(2);
+
+    outFile << "Total Revenue: " << totalRevenue << " EGP\n";
+    cout << "Total Revenue: " << totalRevenue << " EGP\n";
+
+    outFile << "========================================\n";
+    cout << "========================================\n";
+
+    outFile.close();
+    cout << "\nCompleted orders saved to completed_orders.txt successfully!\n";
+}
+
+void saveDriverStatistics(DeliveryDriver** drivers, int driverCount) {
+    ofstream outFile("driver_stats.txt");
+
+    if (!outFile) {
+        cout << "\nError: Unable to open driver_stats.txt for writing!\n";
+        return;
+    }
+
+    string header = "========================================\n";
+    header += "       DELIVERY DRIVER STATISTICS\n";
+    header += "========================================\n\n";
+
+    outFile << header;
+    cout << "\n" << header;
+
+    if (driverCount == 0) {
+        string noDrivers = "No drivers found in the system.\n";
+        outFile << noDrivers;
+        cout << noDrivers;
+    }
+    else {
+        for (int i = 0; i < driverCount; i++) {
+            string driverInfo = "Driver ID: " + drivers[i]->GetUserId() + "\n";
+            driverInfo += "Name: " + drivers[i]->GetName() + "\n";
+            driverInfo += "Phone: " + drivers[i]->GetPhoneNumber() + "\n";
+            driverInfo += "Vehicle Type: " + drivers[i]->GetVehicleType() + "\n";
+
+            outFile << driverInfo;
+            cout << driverInfo;
+
+            outFile << fixed << setprecision(2);
+            cout << fixed << setprecision(2);
+
+            outFile << "Completed Deliveries: " << drivers[i]->GetCompletedDeliveries() << "\n";
+            cout << "Completed Deliveries: " << drivers[i]->GetCompletedDeliveries() << "\n";
+
+            outFile << "Total Earnings: " << drivers[i]->GetTotalEarnings() << " EGP\n";
+            cout << "Total Earnings: " << drivers[i]->GetTotalEarnings() << " EGP\n";
+
+            double avgEarnings = 0.0;
+            if (drivers[i]->GetCompletedDeliveries() > 0) {
+                avgEarnings = drivers[i]->GetTotalEarnings() / drivers[i]->GetCompletedDeliveries();
+            }
+
+            outFile << "Average Earnings per Delivery: " << avgEarnings << " EGP\n";
+            cout << "Average Earnings per Delivery: " << avgEarnings << " EGP\n";
+
+            outFile << "----------------------------------------\n";
+            cout << "----------------------------------------\n";
+        }
+
+        int totalDeliveries = 0;
+        double totalEarnings = 0.0;
+
+        for (int i = 0; i < driverCount; i++) {
+            totalDeliveries += drivers[i]->GetCompletedDeliveries();
+            totalEarnings += drivers[i]->GetTotalEarnings();
+        }
+
+        string summary = "\n========================================\n";
+        summary += "              SUMMARY\n";
+        summary += "========================================\n";
+
+        outFile << summary;
+        cout << summary;
+
+        outFile << "Total Drivers: " << driverCount << "\n";
+        cout << "Total Drivers: " << driverCount << "\n";
+
+        outFile << "Total Deliveries: " << totalDeliveries << "\n";
+        cout << "Total Deliveries: " << totalDeliveries << "\n";
+
+        outFile << fixed << setprecision(2);
+        cout << fixed << setprecision(2);
+
+        outFile << "Total Earnings: " << totalEarnings << " EGP\n";
+        cout << "Total Earnings: " << totalEarnings << " EGP\n";
+
+        if (driverCount > 0) {
+            double avgEarningsPerDriver = totalEarnings / driverCount;
+            outFile << "Average Earnings per Driver: " << avgEarningsPerDriver << " EGP\n";
+            cout << "Average Earnings per Driver: " << avgEarningsPerDriver << " EGP\n";
+        }
+
+        outFile << "========================================\n";
+        cout << "========================================\n";
+    }
+
+    outFile.close();
+    cout << "\nDriver statistics saved to driver_stats.txt successfully!\n";
+}
+
+void displayStatistics(Customer** customers, int customerCount, DeliveryDriver** drivers, int driverCount) {
+    cout << "\n========================================\n";
+    cout << "         SYSTEM STATISTICS\n";
+    cout << "========================================\n";
+    cout << "Total Users: " << User::getTotalUsers() << "\n";
+    cout << "Total Customers: " << customerCount << "\n";
+    cout << "Total Drivers: " << driverCount << "\n";
+    cout << "Total Orders: " << Order::GetTotalOrders() << "\n";
+    cout << "========================================\n";
+}
+
+void cleanup(Customer** customers, int customerCount, DeliveryDriver** drivers, int driverCount, Order** orders, int orderCount) {
+    // Delete all customers
+    for (int i = 0; i < customerCount; i++) {
+        delete customers[i];
+    }
+
+    // Delete all drivers
+    for (int i = 0; i < driverCount; i++) {
+        delete drivers[i];
+    }
+
+    // Delete all orders
+    for (int i = 0; i < orderCount; i++) {
+        delete orders[i];
+    }
 }

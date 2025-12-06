@@ -1,9 +1,11 @@
 ﻿#pragma once
+#include <string>
 #include "Customer.h"
 #include "DeliveryDriver.h"
 #include"FoodItem.h"
 #include "Enums.h"
 #include <fstream>
+using namespace std;
 /*  مروان هيثم السيد_20246106_G8
     عمر عصام خليفة_20246075_G8
 */
@@ -20,7 +22,7 @@ private:
 	void Resize();
 public:
 	Order();
-	Order(string orderId,Customer * customer);
+	Order(string orderId, Customer *customer);
 	Order(const Order& obj);
 	~Order();
 	void AddItem(const FoodItem& item);
@@ -30,7 +32,7 @@ public:
 	void DisplayOrder() const;
 
 	static int GetTotalOrders();
-	string GetOrderId() const;
+	std::string GetOrderId() const;
 	Customer* GetCustomer() const;
 	DeliveryDriver* GetDriver() const;
 	OrderStatus GetStatus() const;
