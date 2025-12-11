@@ -18,7 +18,7 @@ Order ::Order()
     _Total_Orders++;
 }
 
-Order::Order(string orderId, Customer *customer) 
+Order::Order(string orderId, Customer *customer)
 {
     _OrderId = orderId;
     _Customer = customer;
@@ -84,7 +84,7 @@ void Order::AddItem(const FoodItem &item)
     _ItemCount++;
 }
 
-void Order  ::AssignDriver(DeliveryDriver *driver)
+void Order ::AssignDriver(DeliveryDriver *driver)
 {
     _Driver = driver;
 }
@@ -102,61 +102,69 @@ double Order ::CalculateTotal() const
 
 void Order ::UpdateStatus(OrderStatus newstatus)
 {
-    _Status = newstatus;
 
-    if (_Status == OrderStatus::Delivered)
+    if (newstatus == OrderStatus::Delivered)
     {
 
-        if (_Status == OrderStatus ::Delivered)
+        if (_Driver != nullptr)
         {
+            _Status = newstatus;
             double orderTotal = CalculateTotal();
             _Driver->CompletedDelivery(orderTotal);
             ++(*_Driver);
             int pointsearned = (int)orderTotal / 10.0;
             *_Customer += pointsearned; // انا مش فاهم اوي نظام ال loyality points فا معرفش ده صح ولا لا
+            cout << "\nOrder status updated successfully!\n";
         }
         else
         {
-            cout << "There is no driver/customer assigned yet!\n";
+            cout << "\nThere is no driver/customer assigned yet!\n";
         }
+    }
+    else
+    {
+        _Status = newstatus;
+        cout << "\nOrder status updated successfully!\n";
     }
 }
 
-void Order ::DisplayOrder() const // عايز testing للكلام ده عشان افهم الشكل
+void Order ::DisplayOrder() const
 {
 
-    cout << "Order Id : " << _OrderId << "\tCustomer : ";
+    cout << "Order Id : " << _OrderId << endl
+         << "Customer :- \n";
     if (_Customer != nullptr)
         _Customer->displayInfo();
     else
         cout << "Not assigned";
-    cout << "\nDriver : ";
+    cout << "\nDriver :- \n";
     if (_Driver != nullptr)
         _Driver->displayInfo();
     else
         cout << "Not assigned";
 
-    cout << "\tItems : ";
+    cout << "\nItems : \n";
     for (int i = 0; i < _ItemCount; i++)
     {
-        cout << (i + 1);
+        cout << (i + 1) << "- ";
         _Items[i].DisplayItem();
         cout << endl;
     }
 
-    cout << "Order Status : ";
+    cout << "\nOrder Status : ";
     if (_Status == OrderStatus::pending)
         cout << "Pending";
     else if (_Status == OrderStatus::Preparing)
         cout << "Preparing";
-    else if (_Status == OrderStatus::Out_For_Delivery) // ممكن احولها لفانكشن بره, ايه رأيك؟
+    else if (_Status == OrderStatus::Out_For_Delivery)
         cout << "Out For Delivery";
     else if (_Status == OrderStatus::Delivered)
         cout << "Delivered";
     else if (_Status == OrderStatus::Cancelled)
         cout << "Cancelled";
 
-    cout << "\tTotal : " << CalculateTotal() << " EGP" << endl;
+    cout << "\nTotal : " << CalculateTotal() << " EGP" << endl;
+    cout << "----------------------------------------\n";
 }
 
 int Order ::GetTotalOrders()
@@ -216,12 +224,15 @@ Order Order ::operator+(const Order &other) const
             mergedOrder.AddItem(other._Items[i]);
         }
 
+        cout << "\nOrders combined successfully! New Order ID: " << mergedOrder.GetOrderId() << "\n";
         return mergedOrder;
     }
     else
     {
         cout << "Can't merge order! (not the same driver or customer)\n";
         return Order();
+
+
     }
 }
 
@@ -264,7 +275,7 @@ ostream &operator<<(ostream &out, const Order &order)
         out << "Pending";
     else if (order._Status == OrderStatus::Preparing)
         out << "Preparing";
-    else if (order._Status == OrderStatus::Out_For_Delivery) // ممكن احولها لفانكشن بره, ايه رأيك؟
+    else if (order._Status == OrderStatus::Out_For_Delivery)
         out << "Out For Delivery";
     else if (order._Status == OrderStatus::Delivered)
         out << "Delivered";

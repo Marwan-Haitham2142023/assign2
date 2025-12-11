@@ -1,3 +1,7 @@
+/*  مروان هيثم السيد_20246106_G8
+    عمر عصام خليفة_20246075_G8
+*/
+
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -22,36 +26,36 @@ void displayAllCustomers(Customer **customers, int customerCount);
 void displayAllDrivers(DeliveryDriver **drivers, int driverCount);
 void compareOrders(Order **orders, int orderCount);
 void combineOrders(Order **orders, int &orderCount);
-void saveCompletedOrders(Order** orders, int orderCount);
-void saveDriverStatistics(DeliveryDriver** drivers, int driverCount);
-void displayStatistics(Customer** customers, int customerCount, DeliveryDriver** drivers, int driverCount);
-void cleanup(Customer** customers, int customerCount, DeliveryDriver** drivers, int driverCount, Order** orders, int orderCount);
+void saveCompletedOrders(Order **orders, int orderCount);
+void saveDriverStatistics(DeliveryDriver **drivers, int driverCount);
+void displayStatistics(Customer **customers, int customerCount, DeliveryDriver **drivers, int driverCount);
+void cleanup(Customer **customers, int customerCount, DeliveryDriver **drivers, int driverCount, Order **orders, int orderCount);
 
 int main()
 {
-    const int MAX_CUSTOMERS = 100;
-    const int MAX_DRIVERS = 50;
-    const int MAX_ORDERS = 200;
+    const int maxCustomers = 100;
+    const int maxDrivers = 50;
+    const int maxOrders = 200;
 
-    Customer **customers = new Customer *[MAX_CUSTOMERS];
-    DeliveryDriver **drivers = new DeliveryDriver *[MAX_DRIVERS];
-    Order **orders = new Order *[MAX_ORDERS];
+    Customer **customers = new Customer *[maxCustomers];
+    DeliveryDriver **drivers = new DeliveryDriver *[maxDrivers];
+    Order **orders = new Order *[maxOrders];
 
     int customerCount = 0;
     int driverCount = 0;
     int orderCount = 0;
 
-    for (int i = 0; i < MAX_CUSTOMERS; i++)
+    for (int i = 0; i < maxCustomers; i++)
         customers[i] = nullptr;
-    for (int i = 0; i < MAX_DRIVERS; i++)
+    for (int i = 0; i < maxDrivers; i++)
         drivers[i] = nullptr;
-    for (int i = 0; i < MAX_ORDERS; i++)
+    for (int i = 0; i < maxOrders; i++)
         orders[i] = nullptr;
 
     int choice;
 
     cout << "========================================\n";
-    cout << "   ELMENUS FOOD DELIVERY SYSTEM\n";
+    cout << "   ELMENUS FOOD DELIVERY SYSTEM v1.0\n";
     cout << "========================================\n";
 
     do
@@ -103,19 +107,25 @@ int main()
             break;
         case 11:
             combineOrders(orders, orderCount);
+
             break;
         case 12:
-             saveCompletedOrders(orders, orderCount);
+            displayStatistics(customers, customerCount, drivers, driverCount);
+
             break;
+
         case 13:
-             saveDriverStatistics(drivers, driverCount);
+            saveCompletedOrders(orders, orderCount);
+
             break;
         case 14:
-             displayStatistics(customers, customerCount, drivers, driverCount);
+            saveDriverStatistics(drivers, driverCount);
+
             break;
         case 15:
             cout << "\nThank you for using ElMenus System!\n";
             break;
+
         default:
             cout << "\nInvalid choice! Please try again.\n";
         }
@@ -128,7 +138,7 @@ int main()
 
     } while (choice != 15);
 
-     cleanup(customers, customerCount, drivers, driverCount, orders, orderCount);
+    cleanup(customers, customerCount, drivers, driverCount, orders, orderCount);
 
     delete[] customers;
     delete[] drivers;
@@ -138,24 +148,35 @@ int main()
 
 void displayMainMenu()
 {
-    cout << "\n========================================\n";
-    cout << "              MAIN MENU\n";
-    cout << "========================================\n";
-    cout << "1.  Create Customer\n";
-    cout << "2.  Create Delivery Driver\n";
-    cout << "3.  Create Order\n";
-    cout << "4.  Add Item to Order\n";
+    // cout << "\n========================================\n";
+    cout << "              USER MANAGEMENT\n";
+    cout << "----------------------------------------\n";
+    cout << "1.  Register New Customer\n";
+    cout << "2.  Register New Delivery Driver\n";
+    cout << "----------------------------------------\n";
+
+    cout << "              ORDER MANAGEMENT\n";
+    cout << "----------------------------------------\n";
+    cout << "3.  Create New Order\n";
+    cout << "4.  Add Items to Order\n";
     cout << "5.  Assign Driver to Order\n";
     cout << "6.  Update Order Status\n";
-    cout << "7.  Display All Orders\n";
-    cout << "8.  Display All Customers\n";
-    cout << "9.  Display All Drivers\n";
-    cout << "10. Compare Two Orders\n";
-    cout << "11. Combine Two Orders\n";
-    cout << "12. Save Completed Orders to File\n";
-    cout << "13. Save Driver Statistics to File\n";
-    cout << "14. Display System Statistics\n";
-    cout << "15.  Exit\n";
+    cout << "7.  Display Order Details\n";
+    cout << "----------------------------------------\n";
+    cout << "          INFORMATION & REPORTS\n";
+    cout << "----------------------------------------\n";
+    cout << "8.  Display Customer Information\n";
+    cout << "9.  Display Driver Information\n";
+    cout << "10. Compare Two Orders by Total\n";
+    cout << "11. Combine Two Orders to one Order\n";
+    cout << "12. Display System Statistics\n";
+    cout << "----------------------------------------\n";
+    cout << "              FILE OPERATIONS\n";
+    cout << "----------------------------------------\n";
+    cout << "13. Save Completed Orders to File\n";
+    cout << "14. Save Driver Statistics to File\n";
+    cout << "----------------------------------------\n";
+    cout << "15. Exit\n";
     cout << "========================================\n";
 }
 void createCustomer(Customer **customers, int &customerCount)
@@ -277,7 +298,7 @@ void addItemToOrder(Order **orders, int orderCount)
     }
 
     FoodItem item(itemName, price, quantity);
-    *orders[orderChoice - 1] += item; // Using operator+=
+    *orders[orderChoice - 1] += item;
 
     cout << "\nItem added successfully!\n";
 }
@@ -398,7 +419,6 @@ void updateOrderStatus(Order **orders, int orderCount)
     }
 
     orders[orderChoice - 1]->UpdateStatus(newStatus);
-    cout << "\nOrder status updated successfully!\n";
 }
 
 void displayAllOrders(Order **orders, int orderCount)
@@ -518,16 +538,31 @@ void combineOrders(Order **orders, int &orderCount)
         return;
     }
 
-    Order combined = *orders[order1 - 1] + *orders[order2 - 1]; // Using operator+
+    // Only combine when both orders belong to the same customer (and optionally driver)
+    Order *first = orders[order1 - 1];
+    Order *second = orders[order2 - 1];
+
+    if (first->GetCustomer() != second->GetCustomer())
+    {
+        cout << "\nCannot combine orders with different customers.\n";
+        return;
+    }
+    if (first->GetDriver() != second->GetDriver())
+    {
+        cout << "\nCannot combine orders with different drivers.\n";
+        return;
+    }
+
+    Order combined = *first + *second;
     orders[orderCount] = new Order(combined);
     orderCount++;
-
-    cout << "\nOrders combined successfully! New Order ID: " << combined.GetOrderId() << "\n";
 }
-void saveCompletedOrders(Order** orders, int orderCount) {
+void saveCompletedOrders(Order **orders, int orderCount)
+{
     ofstream outFile("completed_orders.txt");
 
-    if (!outFile) {
+    if (!outFile)
+    {
         cout << "\nError: Unable to open completed_orders.txt for writing!\n";
         return;
     }
@@ -537,13 +572,16 @@ void saveCompletedOrders(Order** orders, int orderCount) {
     header += "========================================\n\n";
 
     outFile << header;
-    cout << "\n" << header;
+    cout << "\n"
+         << header;
 
     int completedCount = 0;
     double totalRevenue = 0.0;
 
-    for (int i = 0; i < orderCount; i++) {
-        if (orders[i]->GetStatus() == OrderStatus::Delivered) {
+    for (int i = 0; i < orderCount; i++)
+    {
+        if (orders[i]->GetStatus() == OrderStatus::Delivered)
+        {
             completedCount++;
             double orderTotal = orders[i]->CalculateTotal();
             totalRevenue += orderTotal;
@@ -551,7 +589,8 @@ void saveCompletedOrders(Order** orders, int orderCount) {
             string orderInfo = "Order ID: " + orders[i]->GetOrderId() + "\n";
             orderInfo += "Customer: " + orders[i]->GetCustomer()->GetName() + "\n";
 
-            if (orders[i]->GetDriver() != nullptr) {
+            if (orders[i]->GetDriver() != nullptr)
+            {
                 orderInfo += "Driver: " + orders[i]->GetDriver()->GetName() + "\n";
             }
 
@@ -595,10 +634,12 @@ void saveCompletedOrders(Order** orders, int orderCount) {
     cout << "\nCompleted orders saved to completed_orders.txt successfully!\n";
 }
 
-void saveDriverStatistics(DeliveryDriver** drivers, int driverCount) {
+void saveDriverStatistics(DeliveryDriver **drivers, int driverCount)
+{
     ofstream outFile("driver_stats.txt");
 
-    if (!outFile) {
+    if (!outFile)
+    {
         cout << "\nError: Unable to open driver_stats.txt for writing!\n";
         return;
     }
@@ -608,15 +649,19 @@ void saveDriverStatistics(DeliveryDriver** drivers, int driverCount) {
     header += "========================================\n\n";
 
     outFile << header;
-    cout << "\n" << header;
+    cout << "\n"
+         << header;
 
-    if (driverCount == 0) {
+    if (driverCount == 0)
+    {
         string noDrivers = "No drivers found in the system.\n";
         outFile << noDrivers;
         cout << noDrivers;
     }
-    else {
-        for (int i = 0; i < driverCount; i++) {
+    else
+    {
+        for (int i = 0; i < driverCount; i++)
+        {
             string driverInfo = "Driver ID: " + drivers[i]->GetUserId() + "\n";
             driverInfo += "Name: " + drivers[i]->GetName() + "\n";
             driverInfo += "Phone: " + drivers[i]->GetPhoneNumber() + "\n";
@@ -635,7 +680,8 @@ void saveDriverStatistics(DeliveryDriver** drivers, int driverCount) {
             cout << "Total Earnings: " << drivers[i]->GetTotalEarnings() << " EGP\n";
 
             double avgEarnings = 0.0;
-            if (drivers[i]->GetCompletedDeliveries() > 0) {
+            if (drivers[i]->GetCompletedDeliveries() > 0)
+            {
                 avgEarnings = drivers[i]->GetTotalEarnings() / drivers[i]->GetCompletedDeliveries();
             }
 
@@ -649,7 +695,8 @@ void saveDriverStatistics(DeliveryDriver** drivers, int driverCount) {
         int totalDeliveries = 0;
         double totalEarnings = 0.0;
 
-        for (int i = 0; i < driverCount; i++) {
+        for (int i = 0; i < driverCount; i++)
+        {
             totalDeliveries += drivers[i]->GetCompletedDeliveries();
             totalEarnings += drivers[i]->GetTotalEarnings();
         }
@@ -673,7 +720,8 @@ void saveDriverStatistics(DeliveryDriver** drivers, int driverCount) {
         outFile << "Total Earnings: " << totalEarnings << " EGP\n";
         cout << "Total Earnings: " << totalEarnings << " EGP\n";
 
-        if (driverCount > 0) {
+        if (driverCount > 0)
+        {
             double avgEarningsPerDriver = totalEarnings / driverCount;
             outFile << "Average Earnings per Driver: " << avgEarningsPerDriver << " EGP\n";
             cout << "Average Earnings per Driver: " << avgEarningsPerDriver << " EGP\n";
@@ -687,7 +735,8 @@ void saveDriverStatistics(DeliveryDriver** drivers, int driverCount) {
     cout << "\nDriver statistics saved to driver_stats.txt successfully!\n";
 }
 
-void displayStatistics(Customer** customers, int customerCount, DeliveryDriver** drivers, int driverCount) {
+void displayStatistics(Customer **customers, int customerCount, DeliveryDriver **drivers, int driverCount)
+{
     cout << "\n========================================\n";
     cout << "         SYSTEM STATISTICS\n";
     cout << "========================================\n";
@@ -698,19 +747,23 @@ void displayStatistics(Customer** customers, int customerCount, DeliveryDriver**
     cout << "========================================\n";
 }
 
-void cleanup(Customer** customers, int customerCount, DeliveryDriver** drivers, int driverCount, Order** orders, int orderCount) {
+void cleanup(Customer **customers, int customerCount, DeliveryDriver **drivers, int driverCount, Order **orders, int orderCount)
+{
     // Delete all customers
-    for (int i = 0; i < customerCount; i++) {
+    for (int i = 0; i < customerCount; i++)
+    {
         delete customers[i];
     }
 
     // Delete all drivers
-    for (int i = 0; i < driverCount; i++) {
+    for (int i = 0; i < driverCount; i++)
+    {
         delete drivers[i];
     }
 
     // Delete all orders
-    for (int i = 0; i < orderCount; i++) {
+    for (int i = 0; i < orderCount; i++)
+    {
         delete orders[i];
     }
 }
